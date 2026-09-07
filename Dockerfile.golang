@@ -1,0 +1,14 @@
+#阶段1：编译
+FROM golang:1.23 AS builder
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -o myapp main.go
+
+#阶段2：scratch空白镜像
+FROM scratch
+COPY --from=builder /app/myapp /myapp
+EXPOSE 8080
+USER 65534
+CMD ["/myapp"]

@@ -1,0 +1,16 @@
+# 阶段1：构建阶段，安装依赖
+FROM python:3.12-slim AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir --target=/app/deps -r requirements.txt
+COPY main.py .
+
+#阶段2：最终运行镜像
+FROM python:3.12-slim
+WORKDIR /app
+COPY --from=builder /app/deps /app/deps
+COPY --from=builder /app/main.py .
+ENV PYTHONPATH=/app/deps
+USER nobody
+EXPOSE 8000
+CMD ["python","main.py"]
