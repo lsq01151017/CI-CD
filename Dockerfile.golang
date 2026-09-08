@@ -1,7 +1,9 @@
 #阶段1：编译
 FROM golang:1.23 AS builder
 WORKDIR /app
-COPY go.mod go.sum ./
+# 先只拷贝go.mod，在容器内下载依赖
+COPY go.mod ./
+RUN go mod download
 RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 go build -o myapp main.go
