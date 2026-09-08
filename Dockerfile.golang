@@ -4,7 +4,6 @@ WORKDIR /app
 # 先只拷贝go.mod，在容器内下载依赖
 COPY go.mod ./
 RUN go mod download
-RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 go build -o myapp main.go
 
