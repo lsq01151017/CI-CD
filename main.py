@@ -3,4 +3,4 @@ app = FastAPI()
 
 @app.get("/")
 def hello():
-    return {"msg":"hello ci/cd"}
+        return {"HELLO"}
